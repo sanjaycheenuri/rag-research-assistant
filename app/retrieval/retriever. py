@@ -1,0 +1,39 @@
+from app.retrieval.embedder import Embedder
+from app.retrieval.vector_store import VectorStore
+
+
+class Retriever:
+    """Retrieve the most relevant document chunks."""
+
+    def __init__(self):
+        self.embedder = Embedder()
+        self.vector_store = VectorStore()
+
+    def retrieve(self, query: str, top_k: int = 5) -> list[dict]:
+        """Search the vector database using a natural-language query."""
+
+        query_embedding = self.embedder.encode([query])[0]
+
+        results = self.vector_store.search(
+            query_embedding=query_embedding,
+            top_k=top_k
+        )
+
+        retrieved_chunks = []
+
+        documents = results.get("documents", [[]])[0]
+        metadatas = results.get("metadatas", [[]])[0]
+        distances = results.get("distances", [[]])[0]
+
+        for document, metadata, distance in zip(
+            documents,
+            metadatas,
+            distances
+        ):
+            retrieved_chunks.append({
+                "text": document,
+                "metadata": metadata,
+                "distance": distance
+            })
+
+        return retrieved_chunks
