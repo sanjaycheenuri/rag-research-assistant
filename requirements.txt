@@ -2,3 +2,4 @@ pymupdf
 python-dotenv
 sentence-transformers
 chromadb
+openai
