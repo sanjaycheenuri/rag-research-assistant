@@ -32,4 +32,4 @@ if __name__ == "__main__":
 
     for page in pages[:2]:
         print(f"\n--- Page {page['page']} ---")
-        print(page["text"][:1000])
+        print(page["text"][:1000]) 
